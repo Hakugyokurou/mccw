@@ -1,6 +1,6 @@
 <template>
   <el-row>
-    <el-col :span="4"><el-input v-model="input" placeholder="Search here..."></el-input></el-col>
+    <el-col :span="4"><el-input v-model="input" placeholder="Search here...">abc</el-input></el-col>
   </el-row>
 </template>
 
