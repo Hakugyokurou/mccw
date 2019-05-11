@@ -1,0 +1,76 @@
+<template>
+    <el-col>
+      <el-menu
+        class="el-menu-demo"
+        background-color="#545c64"
+        text-color="#fff"
+        active-text-color="#6dc5a3">
+        <el-menu-item class="el-menu-logo" @click="to">
+          <el-image :src="src"></el-image>
+        </el-menu-item>
+        <el-menu-item index="1">
+          <template slot="title" @click="to">
+            <i class="el-icon-s-home"></i>
+            <span>主页</span>
+          </template>
+        </el-menu-item>
+        <el-submenu index="1">
+          <template slot="title">
+            <i class="el-icon-s-grid"></i>
+            <span>表格管理</span>
+          </template>
+          <el-menu-item-group>
+            <el-menu-item index="1-1">基本表格</el-menu-item>
+            <el-menu-item index="1-2">排序表格</el-menu-item>
+          </el-menu-item-group>
+        </el-submenu>
+        <el-submenu index="2">
+          <template slot="title">
+            <i class="el-icon-s-data"></i>
+            <span>图表管理</span>
+          </template>
+          <el-menu-item-group>
+            <el-menu-item index="2-1">柱状图表</el-menu-item>
+          </el-menu-item-group>
+        </el-submenu>
+      </el-menu>
+    </el-col>
+</template>
+
+<script>
+export default {
+  name: 'mNav',
+  data () {
+    return {
+      src: require('@/assets/logo.png')
+    }
+  },
+  methods: {
+    to () {
+      this.$router.push('*')
+    }
+  }
+}
+</script>
+
+<style lang="less">
+  .el-menu-demo {
+    height: 100vh;
+
+    .el-menu-logo{
+      height: 70px;
+
+      .el-image {
+        line-height: 0;
+      }
+    }
+
+    .el-col .el-menu {
+      border-right: none;
+    }
+
+    .is-active {
+      background: rgb(67, 74, 80) !important;
+    }
+  }
+</style>
