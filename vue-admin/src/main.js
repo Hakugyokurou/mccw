@@ -3,14 +3,15 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import ElementUI from 'element-ui'
+import Echarts from 'echarts'
 
 import 'reset-css'
 import 'element-ui/lib/theme-chalk/index.css'
-import echarts from 'echarts'
-Vue.prototype.$echarts = echarts
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)
+
+Vue.prototype.$echart = Echarts
 
 new Vue({
   router,

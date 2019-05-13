@@ -62,7 +62,7 @@ export default {
       this.$router.push('/home/tablesort')
       this.$emit('fun', false)
     },
-    charts() {
+    charts () {
       this.$router.push('/home/charts')
       this.$emit('fun', false)
     }
@@ -75,6 +75,7 @@ export default {
     height: 100%;
 
   .el-menu-demo {
+    border-right: none;
     height: 100%;
     min-height: 100vh;
 
