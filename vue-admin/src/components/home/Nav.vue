@@ -30,7 +30,7 @@
             <span>图表管理</span>
           </template>
           <el-menu-item-group>
-            <el-menu-item index="2-1">柱状图表</el-menu-item>
+            <el-menu-item index="2-1" @click="charts">柱状图表</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
       </el-menu>
@@ -56,6 +56,10 @@ export default {
     },
     rank () {
       this.$router.push('/home/tablesort')
+      this.$emit('fun', false)
+    },
+    charts() {
+      this.$router.push('/home/charts')
       this.$emit('fun', false)
     }
   }
