@@ -1,14 +1,14 @@
 <template>
   <div>
     <el-table
-      ref="multipleTable"
       :data="tableData.slice((currentPage-1)*pageSize, currentPage*pageSize)"
       tooltip-effect="dark"
+      v-loading="load_data"
+      element-loading-text="拼命加载中"
       border
       style="width: 100%"
       :header-cell-style="{background:'#EEF1F6'}"
       @select="Change">
-      <!--@select="handleSelectionChange">-->
       <el-table-column
         type="selection"
         width="55">
@@ -53,17 +53,17 @@
         label="操作"
         width="180">
         <template slot-scope="scope">
-          <el-button @click="handleClick(scope.row)" type="primary" size="mini"><i
+          <el-button @click="updateClick(scope.row, scope.$index)" type="primary" size="mini"><i
             class="el-icon-edit">修改</i>
           </el-button>
-          <el-button type="danger" size="mini"><i class="el-icon-delete">删除</i></el-button>
+          <el-button @click="deleteClick(scope.row)" type="danger" size="mini"><i class="el-icon-delete">删除</i></el-button>
         </template>
       </el-table-column>
     </el-table>
     <div class="clearfix v-table-footer">
       <div class="fl">
         <el-row>
-          <el-button type="danger" class="el-button--small" :disabled="isDisabled"><i class="el-icon-delete"></i>批量删除
+          <el-button @click="deleteAll" type="danger" class="el-button--small" :disabled="isDisabled"><i class="el-icon-delete"></i>批量删除
           </el-button>
         </el-row>
       </div>
@@ -86,8 +86,14 @@
 export default {
   name: 'TableBase',
   methods: {
-    handleClick (row) {
-      this.$router.push({ path: '/home/tableupdate/' + row.id })
+    Change (val, row) {
+      // console.log(val, row)
+      this.selection = val
+    },
+
+    //修改记录
+    updateClick(row, index) {
+      this.$router.push({path: '/home/tableupdate/*' + row.id})
       this.$store.commit('incrment', {
         id: row.id,
         name: row.name,
@@ -95,22 +101,60 @@ export default {
         age: row.age,
         date: row.date,
         zip: row.zip,
-        address: row.address
+        address: row.address,
+        index: index
       })
     },
-    toggleSelection (rows) {
-      if (rows) {
-        rows.forEach(row => {
-          this.$refs.multipleTable.toggleRowSelection(row)
+    //删除记录
+    deleteClick(row){
+      let arr =  this.tableData
+      this.$confirm('此操作将永久删除该条记录, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        arr.forEach((el, index)=>{
+          //找到数组里的这个对象,然后删除
+          if (el.id === row.id) {
+            arr.splice(index, 1)
+          }
         })
-      } else {
-        this.$refs.multipleTable.clearSelection()
-      }
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        });
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
     },
-    Change (val, row) {
-      // console.log(val, row)
-      this.multipleSelection = val
+    //批量删除
+    deleteAll(){
+      let arr =  this.multipleSelection
+      let tableArr =  this.tableData
+      this.$confirm('此操作将永久删除该条记录, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.tableData = tableArr.filter((el, index)=>{
+          return arr.indexOf(el) < 0
+        })
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        });
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
     },
+
+    //分页
     loadData () {
       this.total = this.tableData.length
     },
@@ -118,14 +162,10 @@ export default {
       this.currentPage = currentPage
     }
   },
-  mounted () {
-    let obj = this.$store.state.obj
-    if (obj) {
-      this.tableData.forEach((el, index) => {
-        if (el.id === obj.id) {
-          this.tableData[index] = obj
-        }
-      })
+  mounted() {
+    if (this.$route.params.obj) {
+      this.obj = this.$route.params.obj
+      this.tableData[this.$store.state.obj.index] = this.obj
     }
   },
   data () {
@@ -133,8 +173,11 @@ export default {
       total: 0, // 默认数据总数
       pageSize: 10, // 默认每页条数
       currentPage: 1, // 默认开始页面
-      multipleSelection: [],
+      selection: [],
+      obj: {},
+      // index: 0,
       isDisabled: true,
+      load_data: false,
       tableData: [{
         id: '1',
         name: '王小虎',

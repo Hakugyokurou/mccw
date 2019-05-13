@@ -55,7 +55,7 @@ export default {
       this.$emit('fun', false)
     },
     rank () {
-      this.$router.push('/home/tableupdate/*')
+      this.$router.push('/home/tablesort')
       this.$emit('fun', false)
     }
   }

@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from './components/Home.vue'
 import TableBase from './components/table/TableBase'
 import TableUpdate from './components/table/TableUpdate'
+import TableSort from './components/table/TableSort'
 
 Vue.use(Router)
 
@@ -23,9 +24,14 @@ export default new Router({
           component: TableBase
         },
         {
-          path: '/home/tableupdate',
+          path: '/home/tableupdate/*',
           name: 'tableUpdate',
           component: TableUpdate
+        },
+        {
+          path: '/home/tablesort',
+          name: 'tableSort',
+          component: TableSort
         }
       ]
     }
