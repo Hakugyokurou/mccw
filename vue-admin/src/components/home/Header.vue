@@ -1,6 +1,22 @@
 <template>
   <el-row>
-    <el-col :span="4"><el-input v-model="input" placeholder="Search here...">abc</el-input></el-col>
+    <el-col :span="3">
+      <el-input size="medium" v-model="input" v-on:keyup.enter.native="submit" placeholder="Search here..."></el-input>
+    </el-col>
+    <el-col :span="2" :offset="19">
+      <el-dropdown trigger="click">
+          <span class="el-dropdown-link">
+            <img src="https://avatars0.githubusercontent.com/u/16893554?v=3&s=240" alt="">
+            <span>{{user}}</span>
+            <i class="el-icon-caret-bottom"></i>
+          </span>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item icon="el-icon-plus">个人信息</el-dropdown-item>
+          <el-dropdown-item icon="el-icon-circle-plus">设置</el-dropdown-item>
+          <el-dropdown-item icon="el-icon-circle-plus-outline">安全退出</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+    </el-col>
   </el-row>
 </template>
 
@@ -9,14 +25,59 @@ export default {
   name: 'mHeader',
   data () {
     return {
-      input: null
+      input: null,
+      user: 'user'
+    }
+  },
+  methods: {
+    submit () {
+      if (this.input) {
+        this.$message({
+          message: this.input,
+          type: 'success'
+        })
+      }
     }
   }
 }
 </script>
 
 <style lang="less">
-  .el-row{
-    padding-top: 10px;
+  .el-row {
+    height: 100%;
+    line-height: 50px;
+
+    .el-col {
+      vertical-align: middle;
+      .el-dropdown{
+        padding: 0 8px;
+        transition: 0.5s;
+        &:hover{
+          color: #fff;
+          background: #333333;
+        }
+        .el-dropdown-link{
+          font-size: 18px;
+          line-height: 18px;
+          img{
+            width: 24px;
+            margin-right: 10px;
+            vertical-align: middle;
+          }
+          span, i{
+            vertical-align: middle;
+          }
+        }
+      }
+    }
+  }
+
+  .el-message {
+    padding: 0 !important;
+
+    .el-message__icon {
+      padding: 10px 20px 10px 15px;
+      background: #e1e1e1;
+    }
   }
 </style>

@@ -8,8 +8,8 @@
         <el-menu-item class="el-menu-logo" @click="to">
           <el-image :src="src"></el-image>
         </el-menu-item>
-        <el-menu-item index="1">
-          <template slot="title" @click="to">
+        <el-menu-item index="1" @click="to">
+          <template slot="title">
             <i class="el-icon-s-home"></i>
             <span>主页</span>
           </template>
@@ -20,8 +20,8 @@
             <span>表格管理</span>
           </template>
           <el-menu-item-group>
-            <el-menu-item index="1-1">基本表格</el-menu-item>
-            <el-menu-item index="1-2">排序表格</el-menu-item>
+            <el-menu-item index="1-1" @click="basic">基本表格</el-menu-item>
+            <el-menu-item index="1-2" @click="rank">排序表格</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
         <el-submenu index="2">
@@ -48,14 +48,27 @@ export default {
   methods: {
     to () {
       this.$router.push('*')
+      this.$emit('fun', true)
+    },
+    basic () {
+      this.$router.push('/home/tablebase')
+      this.$emit('fun', false)
+    },
+    rank () {
+      this.$router.push('/home/tableupdate/*')
+      this.$emit('fun', false)
     }
   }
 }
 </script>
 
 <style lang="less">
+  .el-col{
+    height: 100%;
+
   .el-menu-demo {
-    height: 100vh;
+    height: 100%;
+    min-height: 100vh;
 
     .el-menu-logo{
       height: 70px;
@@ -72,5 +85,6 @@ export default {
     .is-active {
       background: rgb(67, 74, 80) !important;
     }
+  }
   }
 </style>
