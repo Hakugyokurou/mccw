@@ -9,6 +9,10 @@ import 'reset-css'
 import 'element-ui/lib/theme-chalk/index.css'
 
 Vue.config.productionTip = false
+
+require('./mock.js')
+
+Vue.config.productionTip = false
 Vue.use(ElementUI)
 
 Vue.prototype.$echart = Echarts

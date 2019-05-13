@@ -7,6 +7,9 @@ import TableUpdate from './components/table/TableUpdate'
 import TableSort from './components/table/TableSort'
 import Charts from './components/echarts/Finds'
 
+import Land from './components/Land.vue'
+import Index from './data/index.vue'
+
 Vue.use(Router)
 
 export default new Router({
@@ -44,8 +47,19 @@ export default new Router({
           path: '/home/charts',
           name: 'Charts',
           component: Charts
-        }
+        },
+
       ]
+    },
+    {
+      path: '/land',
+      name: 'land',
+      component: Land
+    },
+    {
+      path:'/',
+      component:Index,
+      name:'index'
     }
   ]
 })
