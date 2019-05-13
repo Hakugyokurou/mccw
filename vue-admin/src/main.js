@@ -10,6 +10,10 @@ import echarts from 'echarts'
 Vue.prototype.$echarts = echarts
 
 Vue.config.productionTip = false
+
+require('./mock.js')
+
+Vue.config.productionTip = false
 Vue.use(ElementUI)
 
 new Vue({
