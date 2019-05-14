@@ -17,4 +17,4 @@ for(let i = 0; i < 200; i ++) { // 可自定义生成的个数
     data.push(template)
 }
 
-Mock.mock('/data/index', 'post', data); // 根据数据模板生成模拟数据
+Mock.mock('/components/Home', 'post', data); // 根据数据模板生成模拟数据
