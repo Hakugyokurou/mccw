@@ -17,7 +17,7 @@
             getdata: function() {
                 api.mockdata('/data/index')
                     .then(res => {
-                        console.log(res);
+                        // console.log(res);
                         this.dataShow = res;
                     })
             }

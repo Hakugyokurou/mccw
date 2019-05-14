@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-form ref="form" :rules="rules"  label-position="right" :model="form" label-width="80px" size="small">
+    <el-form ref="form" :rules="rules" label-position="right" :model="form" label-width="80px" size="small">
       <el-form-item label="姓名" prop="name" style="width: 20%;">
         <el-input v-model="form.name"></el-input>
       </el-form-item>
@@ -14,7 +14,8 @@
         <el-input v-model.number="form.age"></el-input>
       </el-form-item>
       <el-form-item label="生日" style="width: 10%;">
-        <el-date-picker type="date" value-format="yyyy-MM-dd" placeholder="选择生日" v-model="form.date" style="width: 325%;">
+        <el-date-picker type="date" value-format="yyyy-MM-dd" placeholder="选择生日" v-model="form.date"
+                        style="width: 325%;">
         </el-date-picker>
       </el-form-item>
       <el-form-item label="邮编" style="width: 20%;">
@@ -30,7 +31,7 @@
 
 <script>
   export default {
-    name: "TableUpdate",
+    name: "TableAdd",
     data() {
       return {
         form: {
@@ -46,9 +47,6 @@
           ]
         }
       };
-    },
-    created() {
-      this.form = this.$store.state.obj
     },
     methods: {
       onSubmit() {
