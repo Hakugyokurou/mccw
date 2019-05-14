@@ -1,88 +1,95 @@
 <template>
-  <div>
-    <el-table
-      :data="tableData.slice((currentPage-1)*pageSize, currentPage*pageSize)"
-      tooltip-effect="dark"
-      v-loading="load_data"
-      element-loading-text="拼命加载中"
-      border
-      style="width: 100%"
-      :header-cell-style="{background:'#EEF1F6'}"
-      @select="Change">
-      <el-table-column
-        type="selection"
-        width="55">
-      </el-table-column>
-      <el-table-column
-        fixed
-        prop="id"
-        label="id"
-        width="80">
-      </el-table-column>
-      <el-table-column
-        prop="name"
-        label="姓名"
-        width="120">
-      </el-table-column>
-      <el-table-column
-        prop="gender"
-        label="性别"
-        width="100">
-      </el-table-column>
-      <el-table-column
-        prop="age"
-        label="年龄"
-        width="100">
-      </el-table-column>
-      <el-table-column
-        prop="date"
-        label="日期"
-        width="120">
-      </el-table-column>
-      <el-table-column
-        prop="zip"
-        label="邮编"
-        width="120">
-      </el-table-column>
-      <el-table-column
-        prop="address"
-        label="地址"
-        width="auto">
-      </el-table-column>
-      <el-table-column
-        label="操作"
-        width="180">
-        <template slot-scope="scope">
-          <el-button @click="updateClick(scope.row, scope.$index)" type="primary" size="mini"><i
-            class="el-icon-edit">修改</i>
-          </el-button>
-          <el-button @click="deleteClick(scope.row)" type="danger" size="mini"><i class="el-icon-delete">删除</i></el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <div class="clearfix v-table-footer">
-      <div class="fl">
-        <el-row>
-          <el-button @click="deleteAll" type="danger" class="el-button--small" :disabled="isDisabled"><i class="el-icon-delete"></i>批量删除
-          </el-button>
-        </el-row>
-      </div>
+  <el-container>
+    <el-header height="50px" ><m-head title="基本表格"></m-head></el-header>
+    <el-main>
+      <el-table
+        :data="tableData.slice((currentPage-1)*pageSize, currentPage*pageSize)"
+        tooltip-effect="dark"
+        v-loading="load_data"
+        element-loading-text="拼命加载中"
+        border
+        style="width: 100%"
+        :header-cell-style="{background:'#EEF1F6'}"
+        @select="Change">
+        <el-table-column
+          type="selection"
+          width="55">
+        </el-table-column>
+        <el-table-column
+          fixed
+          prop="id"
+          label="id"
+          width="80">
+        </el-table-column>
+        <el-table-column
+          prop="name"
+          label="姓名"
+          width="120">
+        </el-table-column>
+        <el-table-column
+          prop="gender"
+          label="性别"
+          width="100">
+        </el-table-column>
+        <el-table-column
+          prop="age"
+          label="年龄"
+          width="100">
+        </el-table-column>
+        <el-table-column
+          prop="date"
+          label="日期"
+          width="120">
+        </el-table-column>
+        <el-table-column
+          prop="zip"
+          label="邮编"
+          width="120">
+        </el-table-column>
+        <el-table-column
+          prop="address"
+          label="地址"
+          width="auto">
+        </el-table-column>
+        <el-table-column
+          label="操作"
+          width="180">
+          <template slot-scope="scope">
+            <el-button @click="updateClick(scope.row, scope.$index)" type="primary" size="mini"><i
+              class="el-icon-edit">修改</i>
+            </el-button>
+            <el-button @click="deleteClick(scope.row)" type="danger" size="mini"><i class="el-icon-delete">删除</i>
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div class="clearfix v-table-footer">
+        <div class="fl">
+          <el-row>
+            <el-button @click="deleteAll" type="danger" class="el-button--small" :disabled="isDisabled"><i
+              class="el-icon-delete"></i>批量删除
+            </el-button>
+          </el-row>
+        </div>
 
-      <div class="fr">
-        <el-pagination
-          small
-          background
-          layout="total, prev, pager, next"
-          :total="200"
-          @current-change="current_change">
-        </el-pagination>
-      </div>
+        <div class="fr">
+          <el-pagination
+            small
+            background
+            layout="total, prev, pager, next"
+            :total="200"
+            @current-change="current_change">
+          </el-pagination>
+        </div>
 
-    </div>
-  </div>
+      </div>
+    </el-main>
+  </el-container>
 </template>
 
 <script>
+import mHead from './MHead.vue'
+
 export default {
   name: 'TableBase',
   methods: {
@@ -91,9 +98,9 @@ export default {
       this.selection = val
     },
 
-    //修改记录
-    updateClick(row, index) {
-      this.$router.push({path: '/home/tableupdate/*' + row.id})
+    // 修改记录
+    updateClick (row, index) {
+      this.$router.push({ path: '/home/tableupdate/*' + row.id })
       this.$store.commit('incrment', {
         id: row.id,
         name: row.name,
@@ -105,16 +112,16 @@ export default {
         index: index
       })
     },
-    //删除记录
-    deleteClick(row){
-      let arr =  this.tableData
+    // 删除记录
+    deleteClick (row) {
+      let arr = this.tableData
       this.$confirm('此操作将永久删除该条记录, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        arr.forEach((el, index)=>{
-          //找到数组里的这个对象,然后删除
+        arr.forEach((el, index) => {
+          // 找到数组里的这个对象,然后删除
           if (el.id === row.id) {
             arr.splice(index, 1)
           }
@@ -122,39 +129,39 @@ export default {
         this.$message({
           type: 'success',
           message: '删除成功!'
-        });
+        })
       }).catch(() => {
         this.$message({
           type: 'info',
           message: '已取消删除'
-        });
-      });
+        })
+      })
     },
-    //批量删除
-    deleteAll(){
-      let arr =  this.multipleSelection
-      let tableArr =  this.tableData
+    // 批量删除
+    deleteAll () {
+      let arr = this.selection
+      let tableArr = this.tableData
       this.$confirm('此操作将永久删除该条记录, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.tableData = tableArr.filter((el, index)=>{
+        this.tableData = tableArr.filter((el, index) => {
           return arr.indexOf(el) < 0
         })
         this.$message({
           type: 'success',
           message: '删除成功!'
-        });
+        })
       }).catch(() => {
         this.$message({
           type: 'info',
           message: '已取消删除'
-        });
-      });
+        })
+      })
     },
 
-    //分页
+    // 分页
     loadData () {
       this.total = this.tableData.length
     },
@@ -162,7 +169,7 @@ export default {
       this.currentPage = currentPage
     }
   },
-  mounted() {
+  mounted () {
     if (this.$route.params.obj) {
       this.obj = this.$route.params.obj
       this.tableData[this.$store.state.obj.index] = this.obj
@@ -308,6 +315,9 @@ export default {
         zip: 200333
       }]
     }
+  },
+  components: {
+    mHead
   }
 }
 </script>
@@ -319,6 +329,14 @@ export default {
 
   .fr {
     float: right;
+  }
+  .el-header{
+    border-bottom: 1px dotted #909399;
+    border-radius: 7px 7px 0 0;
+  }
+  .el-main{
+    background: #ffffff;
+    border-radius: 0 0 7px 7px;
   }
 
   .clearfix:after {
@@ -333,12 +351,6 @@ export default {
       padding: 7px 14px;
     }
   }
-  .el-icon-delete,
-  .el-icon-edit {
-    margin-right: 5px;
-    margin-left: -3px;
-  }
-
   .v-table-footer {
     margin-top: 20px;
   }

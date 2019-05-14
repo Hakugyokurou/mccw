@@ -11,9 +11,9 @@
             <i class="el-icon-caret-bottom"></i>
           </span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item icon="el-icon-plus">个人信息</el-dropdown-item>
-          <el-dropdown-item icon="el-icon-circle-plus">设置</el-dropdown-item>
-          <el-dropdown-item icon="el-icon-circle-plus-outline">
+          <el-dropdown-item icon="el-icon-user">个人信息</el-dropdown-item>
+          <el-dropdown-item icon="el-icon-setting">设置</el-dropdown-item>
+          <el-dropdown-item icon="el-icon-warning">
             <el-button type="text" @click="open">安全退出</el-button>
           </el-dropdown-item>
         </el-dropdown-menu>
@@ -100,5 +100,4 @@ export default {
       background: #e1e1e1;
     }
   }
-
 </style>
