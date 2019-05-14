@@ -12,7 +12,6 @@ Vue.config.productionTip = false
 
 require('./mock.js')
 
-Vue.config.productionTip = false
 Vue.use(ElementUI)
 
 Vue.prototype.$echart = Echarts

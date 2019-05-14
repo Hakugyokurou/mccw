@@ -10,7 +10,7 @@ for(let i = 0; i < 200; i ++) { // 可自定义生成的个数
         'date': Random.date(), // 生成一个随机日期,可加参数定义日期格式
         'age': Random.integer(1, 100), // 生成随机年龄
         'name': Random.cname(), // 生成姓名
-        'address': Random.county(true) ,// 生成地址
+        'address': Random.county(true).replace(/\s+/g,""),// 生成地址
         'gender':Random.cword('男女',1),//生成性别
         'zip': /[0-9]{6}/,//生成邮编
     };

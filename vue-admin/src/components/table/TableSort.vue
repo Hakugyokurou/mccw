@@ -1,6 +1,8 @@
 <template>
-  <el-container>
-    <el-header height="50px"><m-head title="排序表格"></m-head></el-header>
+  <el-container v-if="tableData">
+    <el-header height="50px">
+      <m-head title="排序表格"></m-head>
+    </el-header>
     <el-main>
       <el-table
         :data="tableData.slice((currentPage-1)*pageSize, currentPage*pageSize)"
@@ -75,7 +77,7 @@
       <div class="clearfix v-table-footer">
         <div class="fl">
           <el-row>
-            <el-button @click="deleteAll" type="danger" class="el-button--small" :disabled="isDisabled"><i
+            <el-button @click="deleteAll" type="danger" class="el-button--small"><i
               class="el-icon-delete"></i>批量删除
             </el-button>
           </el-row>
@@ -97,245 +99,146 @@
 </template>
 
 <script>
-import mHead from './MHead.vue'
-export default {
-  name: 'TableSort',
-  methods: {
-    // 修改记录
-    updateClick (row, index) {
-      this.$router.push({ path: '/home/tableupdate/*' + row.id })
-      this.$store.commit('incrment', {
-        id: row.id,
-        name: row.name,
-        gender: row.gender,
-        age: row.age,
-        date: row.date,
-        zip: row.zip,
-        address: row.address,
-        index: index
-      })
-    },
-    // 删除记录
-    deleteClick (row) {
-      let arr = this.tableData
-      this.$confirm('此操作将永久删除该条记录, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        arr.forEach((el, index) => {
-          // 找到数组里的这个对象,然后删除
-          if (el.id === row.id) {
-            arr.splice(index, 1)
-          }
-        })
-        this.$message({
-          type: 'success',
-          message: '删除成功!'
-        })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        })
-      })
-    },
-    // 批量删除
-    deleteAll () {
-      let arr = this.multipleSelection
-      let tableArr = this.tableData
-      this.$confirm('此操作将永久删除该条记录, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.tableData = tableArr.filter((el, index) => {
-          return arr.indexOf(el) < 0
-        })
-        this.$message({
-          type: 'success',
-          message: '删除成功!'
-        })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        })
-      })
-    },
-    Change (val) {
-      console.log(val)
-      console.log(Boolean(val.length))
-      // console.log(this);
-      this.isDisabled = !val.length
-      this.selection = val
-    },
+  import mHead from './MHead.vue'
+  import api from '../../axios/api'
 
-    // 分页
-    loadData () {
-      this.total = this.tableData.length
+  export default {
+    name: 'TableSort',
+    methods: {
+
+      //复选框勾选内容
+      Change(val) {
+        this.selection = val
+      },
+
+      // 修改记录
+      updateClick(row, index) {
+        this.$router.push({path: '/home/tableupdate/*' + row.id})
+        this.$store.commit('incrment', {
+          id: row.id,
+          name: row.name,
+          gender: row.gender,
+          age: row.age,
+          date: row.date,
+          zip: row.zip,
+          address: row.address,
+          index: index
+        })
+      },
+      // 删除记录
+      deleteClick(row) {
+        this.$confirm('此操作将永久删除该条记录, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.tableData.forEach((el, index) => {
+            // 找到数组里的这个对象,然后删除
+            if (el.id === row.id) {
+              this.tableData.splice(index, 1)
+            }
+          })
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
+      },
+      // 批量删除
+      deleteAll() {
+        if (this.selection.length) {
+          let arr = this.selection
+          let tableArr = this.tableData
+          this.$confirm('此操作将永久删除该条记录, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.tableData = tableArr.filter((el, index) => {
+              return arr.indexOf(el) < 0
+            })
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            })
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消删除'
+            })
+          })
+       } else {
+          this.$alert('您没有勾选内容', '提示', {
+          confirmButtonText: '确定',
+          type: 'warning',
+        });
+      }
+     },
+
+      //刷新
+      on_refresh() {
+        this.get_table_data()
+      },
+
+      //定时器
+      time() {
+        setTimeout(() => {
+          console.log(this);
+          this.load_data = false
+        }, 1000)
+      },
+
+      //获取数据
+      get_table_data() {
+        this.load_data = true
+        api.mockdata('/data/index').then(res => {
+            this.tableData = res
+            this.total = this.tableData.length
+            this.time()
+          })
+          .catch(() => {
+            this.load_data = false
+          })
+      },
+      current_change(currentPage) {
+        this.load_data = true
+        this.time()
+        this.currentPage = currentPage
+      }
     },
-    current_change (currentPage) {
-      this.currentPage = currentPage
-    }
-  },
-  // 获取修改后记录
-  // 获取修改后记录
-  mounted () {
-    let obj = this.$store.state.obj
-    if (obj) {
-      this.tableData.forEach((el, index) => {
-        if (el.id === obj.id) {
-          this.tableData[index] = obj
+    created() {
+      this.get_table_data()
+    },
+    // 获取修改后记录
+    watch: {
+      tableData() {
+        if (this.$route.params.obj) {
+          this.obj = this.$route.params.obj
+          this.tableData[this.$store.state.obj.index] = this.obj
         }
-      })
+      }
+    },
+    data() {
+      return {
+        // 请求时的loading效果
+        load_data: true,
+        // 勾选的记录
+        selection: [],
+        total: 0, // 默认数据总数
+        pageSize: 10, // 默认每页条数
+        currentPage: 1, // 默认开始页面
+        tableData: null
+      }
+    },
+    components: {
+      mHead
     }
-  },
-  data () {
-    return {
-      // 请求时的loading效果
-      load_data: false,
-      // 勾选的记录
-      selection: [],
-      total: 0, // 默认数据总数
-      pageSize: 10, // 默认每页条数
-      currentPage: 1, // 默认开始页面
-      isDisabled: true,
-      tableData: [{
-        id: '1',
-        name: '王小虎',
-        gender: '男',
-        age: '24',
-        date: '2016-05-02',
-        address: '上海市普陀区金沙江路1518弄',
-        zip: 200333
-      }, {
-        id: '21',
-        name: '王小虎',
-        gender: '男',
-        age: '24',
-        date: '2016-05-02',
-        address: '上海市普陀区金沙江路1518弄',
-        zip: 200333
-      }, {
-        id: '31',
-        name: '王小虎',
-        gender: '男',
-        age: '24',
-        date: '2016-05-02',
-        address: '上海市普陀区金沙江路1518弄',
-        zip: 200333
-      }, {
-        id: '41',
-        name: '王小虎',
-        gender: '男',
-        age: '24',
-        date: '2016-05-02',
-        address: '上海市普陀区金沙江路1518弄',
-        zip: 200333
-      }, {
-        id: '51',
-        name: '王小虎',
-        gender: '男',
-        age: '24',
-        date: '2016-05-02',
-        address: '上海市普陀区金沙江路1518弄',
-        zip: 200333
-      }, {
-        id: '61',
-        name: '王小虎',
-        gender: '男',
-        age: '24',
-        date: '2016-05-02',
-        address: '上海市普陀区金沙江路1518弄',
-        zip: 200333
-      }, {
-        id: '71',
-        name: '王小虎',
-        gender: '男',
-        age: '24',
-        date: '2016-05-02',
-        address: '上海市普陀区金沙江路1518弄',
-        zip: 200333
-      }, {
-        id: '81',
-        name: '王小虎',
-        gender: '男',
-        age: '24',
-        date: '2016-05-02',
-        address: '上海市普陀区金沙江路1518弄',
-        zip: 200333
-      }, {
-        id: '12',
-        name: '王小虎',
-        gender: '男',
-        age: '24',
-        date: '2016-05-02',
-        address: '上海市普陀区金沙江路1518弄',
-        zip: 200333
-      }, {
-        id: '13',
-        name: '王小虎',
-        gender: '男',
-        age: '24',
-        date: '2016-05-02',
-        address: '上海市普陀区金沙江路1518弄',
-        zip: 200333
-      }, {
-        id: '14',
-        name: '王小虎',
-        gender: '男',
-        age: '24',
-        date: '2016-05-02',
-        address: '上海市普陀区金沙江路1518弄',
-        zip: 200333
-      }, {
-        id: '15',
-        name: '王小虎',
-        gender: '男',
-        age: '24',
-        date: '2016-05-02',
-        address: '上海市普陀区金沙江路1518弄',
-        zip: 200333
-      }, {
-        id: '16',
-        name: '王小虎',
-        gender: '男',
-        age: '24',
-        date: '2016-05-02',
-        address: '上海市普陀区金沙江路1518弄',
-        zip: 200333
-      }, {
-        id: '17',
-        name: '王小虎',
-        gender: '男',
-        age: '24',
-        date: '2016-05-02',
-        address: '上海市普陀区金沙江路1518弄',
-        zip: 200333
-      }, {
-        id: '18',
-        name: '王小虎',
-        gender: '男',
-        age: '24',
-        date: '2016-05-02',
-        address: '上海市普陀区金沙江路1518弄',
-        zip: 200333
-      }, {
-        id: '19',
-        name: '王小虎',
-        gender: '男',
-        age: '24',
-        date: '2016-05-02',
-        address: '上海市普陀区金沙江路1518弄',
-        zip: 200333
-      }]
-    }
-  },
-  components: {
-    mHead
   }
-}
 </script>
 
 <style scoped lang="less">
@@ -346,11 +249,13 @@ export default {
   .fr {
     float: right;
   }
-  .el-header{
+
+  .el-header {
     border-bottom: 1px dotted #909399;
     border-radius: 7px 7px 0 0;
   }
-  .el-main{
+
+  .el-main {
     background: #ffffff;
     border-radius: 0 0 7px 7px;
   }
@@ -362,11 +267,13 @@ export default {
     display: block;
     visibility: hidden;
   }
-  .cell{
-    .el-button{
+
+  .cell {
+    .el-button {
       padding: 7px 14px;
     }
   }
+
   .v-table-footer {
     margin-top: 20px;
   }

@@ -11,7 +11,7 @@ export default new Vuex.Store({
     mok:[],
   },
   mutations: {
-    incrment(state, val) {
+    incrment (state, val) {
       state.obj = val
     },
     mokdata(state,val){

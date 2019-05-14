@@ -3,7 +3,7 @@
     <el-col :span="3">
       <el-input size="medium" v-model="input" v-on:keyup.enter.native="submit" placeholder="Search here..."></el-input>
     </el-col>
-    <el-col :span="2" :offset="19">
+    <el-col :span="3" :offset="18">
       <el-dropdown trigger="click">
           <span class="el-dropdown-link">
             <img src="https://avatars0.githubusercontent.com/u/16893554?v=3&s=240" alt="">
