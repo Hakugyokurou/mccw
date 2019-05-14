@@ -14,10 +14,6 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '*',
-      redirect: '/land'
-    },
-    {
       path: '/home',
       name: 'home',
       component: Home,
@@ -51,14 +47,13 @@ export default new Router({
           path: '/home/charts',
           name: 'Charts',
           component: Charts
-        },
-
+        }
       ]
     },
     {
       path: '/land',
       name: 'land',
       component: Land
-    },
+    }
   ]
 })

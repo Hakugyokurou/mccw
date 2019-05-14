@@ -29,36 +29,36 @@
 </template>
 
 <script>
-  export default {
-    name: "TableUpdate",
-    data() {
-      return {
-        form: {
-          name: '',
-          gender: '',
-          age: '',
-          date: '',
-          zip: ''
-        },
-        rules: {
-          name: [{required: true, message: '姓名不能为空', trigger: 'blur'},
-            {min: 3, max: 5, message: '长度在 3 到 6 个字符', trigger: 'blur'}
-          ]
-        }
-      };
-    },
-    created() {
-      this.form = this.$store.state.obj
-    },
-    methods: {
-      onSubmit() {
-        this.$router.push({path: '/tablebase', name: 'tableBase', params: {obj: this.form}})
+export default {
+  name: 'TableUpdate',
+  data () {
+    return {
+      form: {
+        name: '',
+        gender: '',
+        age: '',
+        date: '',
+        zip: ''
       },
-      cancel() {
-        this.$router.go(-1)
+      rules: {
+        name: [{ required: true, message: '姓名不能为空', trigger: 'blur' },
+          { min: 3, max: 5, message: '长度在 3 到 6 个字符', trigger: 'blur' }
+        ]
       }
     }
+  },
+  created () {
+    this.form = this.$store.state.obj
+  },
+  methods: {
+    onSubmit () {
+      this.$router.push({ path: '/tablebase', name: 'tableBase', params: { obj: this.form } })
+    },
+    cancel () {
+      this.$router.go(-1)
+    }
   }
+}
 </script>
 
 <style scoped lang="less">

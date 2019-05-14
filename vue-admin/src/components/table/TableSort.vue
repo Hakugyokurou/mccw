@@ -1,7 +1,7 @@
 <template>
   <el-container v-if="tableData">
     <el-header height="50px">
-      <m-head title="排序表格"></m-head>
+      <m-head title="排序表格" show="true"></m-head>
     </el-header>
     <el-main>
       <el-table
@@ -12,7 +12,7 @@
         border
         style="width: 100%"
         :header-cell-style="{background:'#EEF1F6'}"
-        @select="Change">
+        @selection-change="Change">
         <el-table-column
           type="selection"
           width="55">
@@ -99,44 +99,66 @@
 </template>
 
 <script>
-  import mHead from './MHead.vue'
-  import api from '../../axios/api'
+import mHead from './MHead.vue'
 
-  export default {
-    name: 'TableSort',
-    methods: {
+export default {
+  name: 'TableSort',
+  methods: {
+    // 复选框勾选内容
+    Change (val) {
+      this.selection = val
+    },
 
-      //复选框勾选内容
-      Change(val) {
-        this.selection = val
-      },
-
-      // 修改记录
-      updateClick(row, index) {
-        this.$router.push({path: '/home/tableupdate/*' + row.id})
-        this.$store.commit('incrment', {
-          id: row.id,
-          name: row.name,
-          gender: row.gender,
-          age: row.age,
-          date: row.date,
-          zip: row.zip,
-          address: row.address,
-          index: index
+    // 修改记录
+    updateClick (row, index) {
+      this.$router.push({ path: '/home/tableupdate/*' + row.id })
+      this.$store.commit('incrment', {
+        id: row.id,
+        name: row.name,
+        gender: row.gender,
+        age: row.age,
+        date: row.date,
+        zip: row.zip,
+        address: row.address,
+        index: index
+      })
+    },
+    // 删除记录
+    deleteClick (row) {
+      this.$confirm('此操作将永久删除该条记录, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.tableData.forEach((el, index) => {
+          // 找到数组里的这个对象,然后删除
+          if (el.id === row.id) {
+            this.tableData.splice(index, 1)
+          }
         })
-      },
-      // 删除记录
-      deleteClick(row) {
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
+    },
+    // 批量删除
+    deleteAll () {
+      if (this.selection.length) {
+        let arr = this.selection
+        let tableArr = this.tableData
         this.$confirm('此操作将永久删除该条记录, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.tableData.forEach((el, index) => {
-            // 找到数组里的这个对象,然后删除
-            if (el.id === row.id) {
-              this.tableData.splice(index, 1)
-            }
+          this.tableData = tableArr.filter((el, index) => {
+            return arr.indexOf(el) < 0
           })
           this.$message({
             type: 'success',
@@ -148,91 +170,71 @@
             message: '已取消删除'
           })
         })
-      },
-      // 批量删除
-      deleteAll() {
-        if (this.selection.length) {
-          let arr = this.selection
-          let tableArr = this.tableData
-          this.$confirm('此操作将永久删除该条记录, 是否继续?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }).then(() => {
-            this.tableData = tableArr.filter((el, index) => {
-              return arr.indexOf(el) < 0
-            })
-            this.$message({
-              type: 'success',
-              message: '删除成功!'
-            })
-          }).catch(() => {
-            this.$message({
-              type: 'info',
-              message: '已取消删除'
-            })
-          })
-       } else {
-          this.$alert('您没有勾选内容', '提示', {
+      } else {
+        this.$alert('您没有勾选内容', '提示', {
           confirmButtonText: '确定',
-          type: 'warning',
-        });
-      }
-     },
-
-      //刷新
-      on_refresh() {
-        this.get_table_data()
-      },
-
-      //定时器
-      time() {
-        setTimeout(() => {
-          this.load_data = false
-        }, 1000)
-      },
-
-      //获取数据
-      get_table_data() {
-        this.load_data = true
-        this.tableData = this.$store.state.mok
-        this.total = this.tableData.length
-        this.time()
-      },
-      current_change(currentPage) {
-        this.load_data = true
-        this.time()
-        this.currentPage = currentPage
+          type: 'warning'
+        })
       }
     },
-    created() {
+
+    // 刷新
+    on_refresh () {
       this.get_table_data()
     },
-    // 获取修改后记录
-    watch: {
-      tableData() {
-        if (this.$route.params.obj) {
-          this.obj = this.$route.params.obj
-          this.tableData[this.$store.state.obj.index] = this.obj
+
+    // 定时器
+    time (f) {
+      setTimeout(() => {
+        this.load_data = false
+        if (f) {
+          f()
         }
-      }
+      }, 1000)
     },
-    data() {
-      return {
-        // 请求时的loading效果
-        load_data: true,
-        // 勾选的记录
-        selection: [],
-        total: 0, // 默认数据总数
-        pageSize: 10, // 默认每页条数
-        currentPage: 1, // 默认开始页面
-        tableData: null
-      }
+
+    // 获取数据
+    get_table_data () {
+      this.load_data = true
+      this.tableData = this.$store.state.mok
+      this.total = this.tableData.length
+      this.time()
     },
-    components: {
-      mHead
+    current_change (currentPage) {
+      this.load_data = true
+      this.time()
+      this.currentPage = currentPage
     }
+  },
+  created () {
+    this.time(this.get_table_data)
+  },
+  // 获取修改后记录
+  watch: {
+    tableData () {
+      if (this.$route.params.obj) {
+        this.obj = this.$route.params.obj
+        this.tableData[this.$store.state.obj.index] = this.obj
+      }
+      this.$route.params.obj = null
+    }
+  },
+  data () {
+    return {
+      // 请求时的loading效果
+      load_data: true,
+      // 勾选的记录
+      selection: [],
+      total: 0, // 默认数据总数
+      pageSize: 10, // 默认每页条数
+      currentPage: 1, // 默认开始页面
+      tableData: null
+    }
+  },
+  components: {
+    mHead
   }
+}
 </script>
 
 <style scoped lang="less">

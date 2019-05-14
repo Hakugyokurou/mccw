@@ -40,7 +40,7 @@ export default {
         })
       }
     },
-    open() {
+    open () {
       this.$confirm('此操作将退出登陆, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -48,15 +48,11 @@ export default {
       }).then(() => {
         this.$message({
           type: 'success',
-          message: '退出登陆成功!',
-        });
-          this.$router.push('/land');
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消登陆'
-        });
-      });
+          message: '退出登陆成功!'
+        })
+        this.$store.commit('loginSuccess', false)
+        this.$router.push('/land')
+      })
     }
   }
 }

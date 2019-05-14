@@ -7,6 +7,9 @@
       <el-header height="50px">
         <m-header></m-header>
       </el-header>
+      <el-main v-if="hide">
+        加载中。。。
+      </el-main>
       <el-main>
         <router-view/>
       </el-main>
@@ -23,7 +26,8 @@ export default {
   name: 'home',
   data () {
     return {
-      show: true
+      show: true,
+      hide: false
     }
   },
   methods: {

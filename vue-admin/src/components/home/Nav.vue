@@ -48,7 +48,7 @@ export default {
   },
   methods: {
     open (index) {
-      console.log(index)
+      // console.log(index)
     },
     to () {
       this.$router.push('/home')

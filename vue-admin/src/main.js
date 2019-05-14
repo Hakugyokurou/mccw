@@ -16,6 +16,23 @@ Vue.use(ElementUI)
 
 Vue.prototype.$echart = Echarts
 
+router.beforeEach((to, from, next) => {
+  let logined = store.state.islogin
+  if (to.name === 'land') {
+    if (!logined) {
+      next()
+    } else {
+      router.replace('/')
+    }
+  } else {
+    if (!logined) {
+      router.replace({ path: '/land', query: { redirect: to.name } })
+    } else {
+      next()
+    }
+  }
+})
+
 new Vue({
   router,
   store,

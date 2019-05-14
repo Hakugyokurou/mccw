@@ -5,13 +5,12 @@
 </template>
 
 <script>
-
-  export default {
-    name: 'app',
-    created () {
-      this.$store.dispatch('getdata')
-    },
+export default {
+  name: 'app',
+  created () {
+    this.$store.dispatch('getdata')
   }
+}
 </script>
 
 <style lang="less">

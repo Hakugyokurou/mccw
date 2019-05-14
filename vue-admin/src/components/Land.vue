@@ -25,40 +25,44 @@
 <script>
 export default {
   name: 'land',
-  data(){
-    return{
-      zhm:'admin',
-      mm:'admin',
-      zhmcont:'',
-      zhmmm:'',
+  data () {
+    return {
+      zhm: 'admin',
+      mm: 'admin',
+      zhmcont: '',
+      zhmmm: ''
     }
   },
-  methods:{
-    open() {
-      if(this.zhm!=='admin'||this.mm!=='admin'){
-        this.$router.push('/land');
-        this.$message('请输入正确的账号密码');
-      }else {
+  methods: {
+    open () {
+      if (this.zhm !== 'admin' || this.mm !== 'admin') {
+        this.$message('请输入正确的账号密码')
+      } else {
+        this.$store.commit('loginSuccess', true)
         this.$router.push('/home')
+        this.$message({
+          type: 'success',
+          message: '登陆成功!'
+        })
+      }
+    }
+  },
+  watch: {
+    zhm: function () {
+      if (this.zhm !== '') {
+        this.zhmcont = ''
+      } else {
+        this.zhmcont = '请输入账号名'
       }
     },
-  },
-  watch:{
-    zhm:function () {
-       if (this.zhm !==''){
-            this.zhmcont ='';
-       }else {
-         this.zhmcont = '请输入账号名';
-       }
-    },
-    mm:function () {
-      if (this.mm !==''){
-        this.zhmmm ='';
-      }else {
-        this.zhmmm = '请输入密码';
+    mm: function () {
+      if (this.mm !== '') {
+        this.zhmmm = ''
+      } else {
+        this.zhmmm = '请输入密码'
       }
-    },
-  },
+    }
+  }
 }
 </script>
 

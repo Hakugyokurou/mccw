@@ -30,37 +30,38 @@
 </template>
 
 <script>
-  import Mock from 'mockjs'
-  export default {
-    name: "TableAdd",
-    data() {
-      return {
-        form: {
-          id: Mock.Random.integer(1, 100),
-          name: '',
-          gender: '',
-          age: '',
-          date: '',
-          zip: ''
-        },
-        rules: {
-          name: [{required: true, message: '姓名不能为空', trigger: 'blur'},
-            {min: 3, max: 5, message: '长度在 3 到 6 个字符', trigger: 'blur'}
-          ]
-        }
-      };
-    },
-    methods: {
-      onSubmit() {
-        //, params: {obj: this.form}
-        this.$router.push({path: '/tablebase', name: 'tableBase'})
-        this.$store.commit('tableAdd', this.form)
+import Mock from 'mockjs'
+
+export default {
+  name: 'TableAdd',
+  data () {
+    return {
+      form: {
+        id: Mock.Random.integer(1, 100),
+        name: '',
+        gender: '',
+        age: '',
+        date: '',
+        zip: ''
       },
-      cancel() {
-        this.$router.go(-1)
+      rules: {
+        name: [{ required: true, message: '姓名不能为空', trigger: 'blur' },
+          { min: 3, max: 5, message: '长度在 3 到 6 个字符', trigger: 'blur' }
+        ]
       }
     }
+  },
+  methods: {
+    onSubmit () {
+      //, params: {obj: this.form}
+      this.$router.push({ path: '/tablebase', name: 'tableBase' })
+      this.$store.commit('tableAdd', this.form)
+    },
+    cancel () {
+      this.$router.go(-1)
+    }
   }
+}
 </script>
 
 <style scoped lang="less">

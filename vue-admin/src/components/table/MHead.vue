@@ -1,16 +1,17 @@
 <template>
     <div class="m-head">{{title}}
-      <div class="m-add">
+      <div class="m-add" v-if="show">
         <my-add></my-add>
       </div>
     </div>
 </template>
 
 <script>
-  import myAdd from './MyAdd'
+import myAdd from './MyAdd'
+
 export default {
   name: 'mHead',
-  props: ['title'],
+  props: ['title', 'show'],
   components: {
     myAdd
   }
