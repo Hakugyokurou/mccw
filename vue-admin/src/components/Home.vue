@@ -44,6 +44,7 @@ export default {
 
     .el-container-demo {
       display: block;
+      min-width: 1200px;
 
       .el-header, .el-footer {
         background: #ffffff;

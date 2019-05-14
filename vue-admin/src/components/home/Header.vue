@@ -1,9 +1,9 @@
 <template>
   <el-row>
-    <el-col :md="3" :sm="4" :xs="6">
+    <el-col :span="3">
       <el-input size="medium" v-model="input" v-on:keyup.enter.native="submit" placeholder="Search here..."></el-input>
     </el-col>
-    <el-col :md={span:2,offset:18} :sm={span:5,offset:16} :xs={span:6,offset:10}>
+    <el-col :span="3" :offset="18">
       <el-dropdown trigger="click">
           <span class="el-dropdown-link">
             <img src="https://avatars0.githubusercontent.com/u/16893554?v=3&s=240" alt="">

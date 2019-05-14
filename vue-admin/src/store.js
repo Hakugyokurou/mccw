@@ -8,7 +8,7 @@ export default new Vuex.Store({
     obj: null
   },
   mutations: {
-    incrment(state, val) {
+    incrment (state, val) {
       state.obj = val
     }
   },
