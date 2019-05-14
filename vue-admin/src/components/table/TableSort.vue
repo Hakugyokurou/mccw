@@ -88,7 +88,7 @@
             small
             background
             layout="total, prev, pager, next"
-            :total="200"
+            :total="total"
             @current-change="current_change">
           </el-pagination>
         </div>
@@ -188,7 +188,6 @@
       //定时器
       time() {
         setTimeout(() => {
-          console.log(this);
           this.load_data = false
         }, 1000)
       },
@@ -196,14 +195,9 @@
       //获取数据
       get_table_data() {
         this.load_data = true
-        api.mockdata('/data/index').then(res => {
-            this.tableData = res
-            this.total = this.tableData.length
-            this.time()
-          })
-          .catch(() => {
-            this.load_data = false
-          })
+        this.tableData = this.$store.state.mok
+        this.total = this.tableData.length
+        this.time()
       },
       current_change(currentPage) {
         this.load_data = true

@@ -79,7 +79,7 @@
             small
             background
             layout="total, prev, pager, next"
-            :total="200"
+            :total="total"
             @current-change="current_change">
           </el-pagination>
         </div>
@@ -125,8 +125,6 @@
             type: 'warning'
           }).then(() => {
             this.tableData.splice(index, 1)
-            console.log(this.tableData[index]);
-            console.log(index);
             this.$message({
               type: 'success',
               message: '删除成功!'
@@ -171,14 +169,13 @@
       },
 
       //刷新
-      on_refresh() {
+      refresh() {
         this.get_table_data()
       },
 
       //定时器
       time() {
         setTimeout(() => {
-          console.log(this);
           this.load_data = false
         }, 1000)
       },
@@ -186,13 +183,9 @@
       //获取数据
       get_table_data() {
         this.load_data = true
-        api.mockdata('/data/index').then(res => {
-          this.tableData = res
-          this.total = this.tableData.length
-          this.time()
-        }).catch(() => {
-          this.load_data = false
-        })
+        this.tableData = this.$store.state.mok
+        this.total = this.tableData.length
+        this.time()
       },
       // 分页
       current_change(currentPage) {
