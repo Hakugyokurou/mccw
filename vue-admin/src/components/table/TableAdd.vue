@@ -30,11 +30,13 @@
 </template>
 
 <script>
+  import Mock from 'mockjs'
   export default {
     name: "TableAdd",
     data() {
       return {
         form: {
+          id: Mock.Random.integer(1, 100),
           name: '',
           gender: '',
           age: '',
@@ -50,7 +52,9 @@
     },
     methods: {
       onSubmit() {
-        this.$router.push({path: '/tablebase', name: 'tableBase', params: {obj: this.form}})
+        //, params: {obj: this.form}
+        this.$router.push({path: '/tablebase', name: 'tableBase'})
+        this.$store.commit('tableAdd', this.form)
       },
       cancel() {
         this.$router.go(-1)

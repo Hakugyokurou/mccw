@@ -16,13 +16,15 @@ export default new Vuex.Store({
     },
     mokdata(state,val){
       state.mok = val
+    },
+    tableAdd(state, val) {
+      state.mok.unshift(val)
     }
   },
   actions: {
     getdata: function() {
       api.mockdata('/components/Home')
         .then(res => {
-          console.log(this);
           this.commit('mokdata',res)
         })
 

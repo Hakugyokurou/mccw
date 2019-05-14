@@ -5,6 +5,7 @@ import Index from './components/table/Index.vue'
 import TableBase from './components/table/TableBase'
 import TableUpdate from './components/table/TableUpdate'
 import TableSort from './components/table/TableSort'
+import TableAdd from './components/table/TableAdd'
 import Charts from './components/echarts/Finds'
 import Land from './components/Land.vue'
 
@@ -40,6 +41,11 @@ export default new Router({
           path: '/home/tablesort',
           name: 'tableSort',
           component: TableSort
+        },
+        {
+          path: '/home/tableadd',
+          name: 'tableAdd',
+          component: TableAdd
         },
         {
           path: '/home/charts',
