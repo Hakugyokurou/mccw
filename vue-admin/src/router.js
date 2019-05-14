@@ -55,11 +55,6 @@ export default new Router({
       path: '/land',
       name: 'land',
       component: Land
-    },
-    /*{
-      path:'/',
-      component:Index,
-      name:'index'
-    }*/
+    }
   ]
 })

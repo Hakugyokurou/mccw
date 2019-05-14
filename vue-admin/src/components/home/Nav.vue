@@ -51,7 +51,7 @@ export default {
       console.log(index)
     },
     to () {
-      this.$router.push('*')
+      this.$router.push('/home')
       this.$emit('fun', true)
     },
     basic () {

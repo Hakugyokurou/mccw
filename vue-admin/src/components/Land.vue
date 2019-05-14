@@ -31,42 +31,42 @@
 <script>
 export default {
   name: 'land',
-  data(){
-    return{
-      zhm:'admin',
-      mm:'admin',
-      zhmcont:'',
-      zhmmm:'',
-      tz:'',
-      cuowuk:false
+  data () {
+    return {
+      zhm: 'admin',
+      mm: 'admin',
+      zhmcont: '',
+      zhmmm: '',
+      tz: '',
+      cuowuk: false
     }
   },
-  methods:{
-    fun(){
-      if(this.zhm!=='admin'||this.mm!=='admin'){
-        this.$router.push('/land');
-        this.cuowuk=true
-      }else {
+  methods: {
+    fun () {
+      if (this.zhm !== 'admin' || this.mm !== 'admin') {
+        this.$router.push('/land')
+        this.cuowuk = true
+      } else {
         this.$router.push('/home')
       }
     }
   },
-  watch:{
-    zhm:function () {
-       if (this.zhm !=''){
-            this.zhmcont ='';
-       }else {
-         this.zhmcont = '请输入账号名';
-       }
-    },
-    mm:function () {
-      if (this.mm !=''){
-        this.zhmmm ='';
-      }else {
-        this.zhmmm = '请输入密码';
+  watch: {
+    zhm: function () {
+      if (this.zhm !== '') {
+        this.zhmcont = ''
+      } else {
+        this.zhmcont = '请输入账号名'
       }
     },
-  },
+    mm: function () {
+      if (this.mm !== '') {
+        this.zhmmm = ''
+      } else {
+        this.zhmmm = '请输入密码'
+      }
+    }
+  }
 }
 </script>
 
