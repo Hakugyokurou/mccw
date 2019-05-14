@@ -95,7 +95,9 @@
 
       </div>
     </el-main>
-    <el-main v-else>加载中。。。</el-main>
+    <el-main v-else
+             v-loading="load_data"
+             element-loading-text="拼命加载中" style="height: 690px"></el-main>
   </el-container>
 </template>
 
