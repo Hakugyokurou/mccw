@@ -1,9 +1,9 @@
 <template>
-  <el-container v-if="tableData">
+  <el-container>
     <el-header height="50px">
       <m-head title="基本表格" show="true"></m-head>
     </el-header>
-    <el-main>
+    <el-main v-if="tableData">
       <el-table
         :data="tableData.slice((currentPage-1)*pageSize, currentPage*pageSize)"
         tooltip-effect="dark"
@@ -86,6 +86,7 @@
 
       </div>
     </el-main>
+    <el-main v-else>加载中。。。</el-main>
   </el-container>
 </template>
 

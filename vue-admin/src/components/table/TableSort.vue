@@ -1,14 +1,14 @@
 <template>
-  <el-container v-if="tableData">
+  <el-container>
     <el-header height="50px">
       <m-head title="排序表格" show="true"></m-head>
     </el-header>
-    <el-main>
+    <el-main v-if="tableData">
       <el-table
-        :data="tableData.slice((currentPage-1)*pageSize, currentPage*pageSize)"
-        tooltip-effect="dark"
         v-loading="load_data"
         element-loading-text="拼命加载中"
+        :data="tableData.slice((currentPage-1)*pageSize, currentPage*pageSize)"
+        tooltip-effect="dark"
         border
         style="width: 100%"
         :header-cell-style="{background:'#EEF1F6'}"
@@ -95,6 +95,7 @@
 
       </div>
     </el-main>
+    <el-main v-else>加载中。。。</el-main>
   </el-container>
 </template>
 
