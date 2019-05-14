@@ -40,7 +40,7 @@ export default {
     mNav,
     mHeader,
     mHead
-  }
+  },
 }
 </script>
 

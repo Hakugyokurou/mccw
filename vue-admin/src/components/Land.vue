@@ -4,27 +4,21 @@
       <div class="contbox">
         <div class="cont">
           <div class="contimg"><img src="@/assets/a5ceee8b.png" ></div>
-          <div class="inpbox">
+          <form class="inpbox" @keyup.enter="open">
               <input type="text" placeholder="请输入账户名 ：" v-model="zhm" >
               <div class="tishibox">
                 <div class="tishi">{{zhmcont}}</div>
               </div>
-              <input type="password" placeholder="请输入密码 ：" v-model="mm" >
+              <input type="password" placeholder="请输入密码 ：" v-model="mm">
               <div class="tishibox">
                 <div class="tishi">{{zhmmm}}</div>
               </div>
-          </div>
-            <button type="button" class="bnt" v-on:click="fun">
+          </form>
+            <el-button :round='true' @click="open" class="bnt">
               <img src="@/assets/check.png" width="30.5px" height="20px">
-            </button>
+            </el-button>
         </div>
       </div>
-      <transition name="fade">
-      <div class="cuowukuang" v-show="cuowuk">
-        <p class="pone">!</p>
-        <div class="ptwo"><p>账号或密码不正确</p></div>
-      </div>
-      </transition>
     </div>
 </template>
 
@@ -37,30 +31,28 @@ export default {
       mm:'admin',
       zhmcont:'',
       zhmmm:'',
-      tz:'',
-      cuowuk:false
     }
   },
   methods:{
-    fun(){
+    open() {
       if(this.zhm!=='admin'||this.mm!=='admin'){
         this.$router.push('/land');
-        this.cuowuk=true
+        this.$message('请输入正确的账号密码');
       }else {
         this.$router.push('/home')
       }
-    }
+    },
   },
   watch:{
     zhm:function () {
-       if (this.zhm !=''){
+       if (this.zhm !==''){
             this.zhmcont ='';
        }else {
          this.zhmcont = '请输入账号名';
        }
     },
     mm:function () {
-      if (this.mm !=''){
+      if (this.mm !==''){
         this.zhmmm ='';
       }else {
         this.zhmmm = '请输入密码';
@@ -71,13 +63,6 @@ export default {
 </script>
 
 <style scoped lang="less">
-  .fade-enter-active, .fade-leave-active {
-    transition: 2s;
-    opacity: 1;
-  }
-  .fade-enter, .fade-leave-to{
-    opacity: 0;
-  }
   .land{
     width: 100%;
     height: 100vh;
@@ -134,31 +119,5 @@ input{
     outline:none;
     border-radius: 5px;
     cursor:pointer
-  }
-  .cuowukuang{
-    display: flex;
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    .pone{
-      width: 40px;
-      height: 40px;
-      background-color: orange;
-      color: white;
-      line-height: 40px;
-      font-size: 24px;
-      text-align: center;
-    }
-    .ptwo{
-      width: 200px;
-      height: 40px;
-      background-color: white;
-      color: grey;
-      line-height: 40px;
-      p{
-        margin-left: 10px;
-      }
-    }
   }
 </style>

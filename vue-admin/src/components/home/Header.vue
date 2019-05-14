@@ -13,7 +13,9 @@
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item icon="el-icon-plus">个人信息</el-dropdown-item>
           <el-dropdown-item icon="el-icon-circle-plus">设置</el-dropdown-item>
-          <el-dropdown-item icon="el-icon-circle-plus-outline">安全退出</el-dropdown-item>
+          <el-dropdown-item icon="el-icon-circle-plus-outline">
+            <el-button type="text" @click="open">安全退出</el-button>
+          </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </el-col>
@@ -37,6 +39,24 @@ export default {
           type: 'success'
         })
       }
+    },
+    open() {
+      this.$confirm('此操作将退出登陆, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$message({
+          type: 'success',
+          message: '退出登陆成功!',
+        });
+          this.$router.push('/land');
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消登陆'
+        });
+      });
     }
   }
 }
@@ -80,4 +100,5 @@ export default {
       background: #e1e1e1;
     }
   }
+
 </style>
